@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <title>JSP Page</title>
+        <link href="../css/style.css" rel="stylesheet">
+        <style type="text/css"> 
+	* {	margin: 0; padding: 0; }
+        body { font-family: Georgia, "Times New Roman", Times, serif; font-size: 18px; }
+        tr#contenedor { width: 80%; margin: 20px auto; }
+        tr#contenedor a { color: #F00; text-decoration: none; }
+                div#contenedor a:hover { color: #FFF; background: #F00; }
+
+        ul#menu_arbol, ul#menu_arbol ul {
+                list-style-type: none;
+                background: url(img/tree/linea_vertical.gif) repeat-y;
+        }
+
+	ul#menu_arbol li {
+		padding: 0 10px;
+		background: url(img/tree/nodo.gif) no-repeat;
+	}
+	
+		ul#menu_arbol li.cierre {
+			background: #FFF url(img/tree/cierre.gif) left top no-repeat;
+		}
+		
+	ul#menu_arbol ul {
+		margin-left: 5px;
+	}
+
+		ul#menu_arbol ul li {
+			font-size: 14px;
+		}
+  </style>
+    </head>
+    <body>
+        <table class="lt" border="0" cellspacing="3" align="center" style="width:650px;">
+            <tr>
+                <td>
+                    <button onclick="añadir_nodo_hijo()">click</button>
+                </td>
+            </tr>
+            <tr id="contenedor">
+                <td>
+                    <ul id="menu_arbol">
+                    <li><a href="#" title="Ver las Cervezas" id="toggle_c">Cervezas</a>
+                        <ul id="cervezas">
+                            <li><a href="#" title="Enlace a cerveza Pilsen">Pilsen</a></li>
+                            <li><a href="#" title="Enlace a cerveza Bock">Bock</a></li>
+                            <li><a href="#" title="Enlace a cerveza Lager">Lager</a></li>
+                            <li><a href="#" title="Enlace a cerveza Ale">Ale</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" title="Ver los Vinos" id="toggle_v">Vinos</a>
+                        <ul id="vinos">
+                            <li><a href="#" title="Enlace a Vino Merlot">Merlot</a></li>
+                            <li><a href="#" title="Enlace a Vino Sirah">Sirah</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" title="Ver los Licores" id="toggle_l">Licores</a>
+                        <ul id="licores">
+                            <li><a href="#" title="Enlace Licor Ron">Ron</a></li>
+                            <li><a href="#" title="Enlace a Licor Vodka">Vodka</a></li>
+                        </ul>
+                    </li>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
+<script type="text/javascript" src="js/tree/mootools.js"></script>
+<script type="text/javascript">
+
+window.onload = function () {
+  var tree = document.getElementById("menu_arbol");
+  var lists = [ menu_arbol ];
+  for (var i = 0; i < tree.getElementsByTagName("ul").length; i++)
+	lists[lists.length] = tree.getElementsByTagName("ul")[i];
+  for (var i = 0; i < lists.length; i++) {
+	var item = lists[i].lastChild;
+	while (!item.tagName || item.tagName.toLowerCase() != "li")
+		item = item.previousSibling;
+		item.className += " cierre";
+  }
+};
+
+
+window.addEvent('domready', function(){
+	var mySlide = new Fx.Slide('cervezas');
+		$('toggle_c').addEvent('click', function(e){
+			e = new Event(e);
+			mySlide.toggle();
+			e.stop();
+		});
+});
+
+window.addEvent('domready', function(){
+	var mySlide = new Fx.Slide('vinos');
+	mySlide.hide()
+		$('toggle_v').addEvent('click', function(e){
+			e = new Event(e);
+			mySlide.toggle();
+			e.stop();
+		});
+});
+
+window.addEvent('domready', function(){		
+	var mySlide = new Fx.Slide('licores');
+	mySlide.hide()
+		$('toggle_l').addEvent('click', function(e){
+			e = new Event(e);
+			mySlide.toggle();
+			e.stop();
+		});
+});
+
+
+    function añadir_nodo_hijo(){
+        var newNodo = document.createElement('li');
+        var sText = document.createTextNode('Hola');
+        var oldNodos = document.getElementById('cervezas').children;
+        
+        if(oldNodos.length != 9){
+            oldNodos[oldNodos.length-1].className = '';
+            newNodo.className = 'cierre';
+            newNodo.appendChild(sText);
+
+            document.getElementById('cervezas').appendChild(newNodo);
+            reload_('cervezas');
+        }else{
+            alert('Solo se pueden agregar 9 nodos hijos');
+        }
+    }
+    
+    function reload_(id_){
+        var mySlide = new Fx.Slide(id_);
+		$('toggle_c').addEvent('click', function(e){
+			e = new Event(e);
+			mySlide.toggle();
+			e.stop();
+		});
+    }
+</script>
